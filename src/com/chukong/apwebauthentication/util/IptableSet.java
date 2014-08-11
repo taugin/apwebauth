@@ -43,7 +43,6 @@ public class IptableSet {
     }
     public static String generateIpCheckRule(String ipAddrMask) {
         String script = "";
-        script += IptableSet.NAT_RULES_CLEAR_ALL + "\n";
         script += IptableSet.NAT_RULE_CREATE_IP_CHECK_CHAIN + "\n";
         script += redirectHttp(ipAddrMask) + "\n";
         script += IptableSet.NAT_RULE_PREROUTING_IP_CHECK + "\n";
