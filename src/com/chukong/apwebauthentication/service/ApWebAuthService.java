@@ -65,7 +65,7 @@ public class ApWebAuthService extends IntentService {
             } else if (apState == WIFI_AP_STATE_DISABLED) {
                 StringBuilder builder = new StringBuilder();
                 try {
-                    CmdExecutor.runScriptAsRoot(IptableSet.NAT_RULES_CLEAR_ALL, builder);
+                    CmdExecutor.runScriptAsRoot(IptableSet.generateClearIpRule(), builder);
                     Log.d("taugin", "builder = " + builder.toString());
                 } catch (IOException e) {
                     // TODO Auto-generated catch block

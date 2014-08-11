@@ -8,6 +8,15 @@ public class IptableSet {
     public static final String NAT_RULES_CLEAR_ALL =
             "iptables -t nat -F";
 
+    public static final String NAT_RULES_CLEAR_IP_CHECK =
+            "iptables -t nat -X IP_CHECK";
+
+    public static final String NAT_RULES_DELETE_IP_CHECK_CHAIN =
+            "iptables -t nat -D PREROUTING -j IP_CHECK";
+
+    public static final String NAT_RULES_DELETE_REDIRECT =
+            "iptables -t nat -D IP_CHECK 1";
+
     // 自定义规则链
     public static final String NAT_RULE_CREATE_IP_CHECK_CHAIN =
             "iptables -t nat -N IP_CHECK";
@@ -24,6 +33,13 @@ public class IptableSet {
     public static final String NAT_RULE_LIST =
              "iptables -t nat -L -n";
     
+    public static String generateClearIpRule() {
+        String script = "";
+        script += IptableSet.NAT_RULES_DELETE_IP_CHECK_CHAIN + "\n";
+        script += IptableSet.NAT_RULES_DELETE_REDIRECT + "\n";
+        script += IptableSet.NAT_RULES_CLEAR_IP_CHECK + "\n";
+        return script;
+    }
     public static String generateIpCheckRule(String ipAddrMask) {
         String script = "";
         script += IptableSet.NAT_RULES_CLEAR_ALL + "\n";
@@ -45,7 +61,7 @@ public class IptableSet {
         } catch(Exception e) {
             subAddress = null;
             maskNumber = 0;
-            Log.d("taugin", e.getLocalizedMessage());
+            Log.d("taugin", "e = " + e);
         }
         if (subAddress != null && maskNumber != 0) {
             subAddress += "/";
