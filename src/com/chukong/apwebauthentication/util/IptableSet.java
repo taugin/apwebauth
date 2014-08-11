@@ -22,8 +22,9 @@ public class IptableSet {
             "iptables -t nat -N IP_CHECK";
 
     // 将来自192.168.43.249：80的数据包重定向到本机的7766端口
+    // -i ap0
     public static final String NAT_RULE_REDIRECT_HTTP_80 =
-            String.format("iptables -t nat -A IP_CHECK  -i ap0 -p tcp -s %s --dport 80 -j REDIRECT --to-port 7766", "0.0.0.0/0");
+            String.format("iptables -t nat -A IP_CHECK -p tcp -s %s --dport 80 -j REDIRECT --to-port 7766", "0.0.0.0/0");
 
     // 引用自定义规则到PREROUTING
     public static final String NAT_RULE_PREROUTING_IP_CHECK =
@@ -66,9 +67,10 @@ public class IptableSet {
         if (subAddress != null && maskNumber != 0) {
             subAddress += "/";
             subAddress += maskNumber;
-            return String.format("iptables -t nat -A IP_CHECK  -i ap0 -p tcp -d \'!\' %s --dport 80 -j REDIRECT --to-port 7766", subAddress);
+            return String.format("iptables -t nat -A IP_CHECK -p tcp -d \'!\' %s --dport 80 -j REDIRECT --to-port 7766", subAddress);
         }
-        return String.format("iptables -t nat -A IP_CHECK  -i ap0 -p tcp -s %s --dport 80 -j REDIRECT --to-port 7766", ipAddrMask);
+        //  -i ap0
+        return String.format("iptables -t nat -A IP_CHECK -p tcp -s %s --dport 80 -j REDIRECT --to-port 7766", ipAddrMask);
     }
     
     private static byte[] ipAddrToByte(String ipAddr) {
